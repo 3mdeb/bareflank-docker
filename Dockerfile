@@ -7,6 +7,7 @@ RUN  \
 	git \
 	build-essential \
 	cmake \
+	cmake-curses-gui \
 	nasm \
 	clang \
 	libelf-dev \
