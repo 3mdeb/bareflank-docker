@@ -1,14 +1,10 @@
-# docker-bareflank
+Docker container for Bareflank builds
+-------------------------------------
 
-Image can be build from directory containing `Dockerfile` with:
+[![Build Status](https://travis-ci.com/3mdeb/bareflank-docker.svg?branch=master)](https://travis-ci.com/3mdeb/yocto-docker)
 
-```
-docker build -t bareflank-uefi .
-```
-
-This is one time operation. It is required only to build image for the first
-time or when any changes to the image were made. Image contains all necessary
-tools to build Bareflank for UEFI.
+Usage
+-----
 
 Next, instructions from [Bareflank README](https://github.com/Bareflank/hypervisor)
 or [YoutTube video](https://www.youtube.com/watch?v=FuEyjDqA53M) need to be
@@ -19,7 +15,8 @@ followed in the container:
 Make and enter a working directory before running following command:
 
 ```
-docker run --rm -it -v $PWD:/home/bareflank/bareflank -w /home/bareflank/bareflank bareflank-uefi /bin/bash
+docker pull 3mdeb/bareflank-docker
+docker run --rm -it -v $PWD:/home/bareflank/bareflank -w /home/bareflank/bareflank 3mdeb/bareflank-docker /bin/bash
 ```
 
 > You can also bind mount another directories or files. A common option for
@@ -76,3 +73,16 @@ make -j<# cores + 1>
 ```
 
 Resulting file is located in `build/efi/x86_64-efi-pe/build`.
+
+Building image
+--------------
+
+Image can be build from directory containing `Dockerfile` with:
+
+```
+docker build -t bareflank-uefi .
+```
+
+This is one time operation. It is required only to build image for the first
+time or when any changes to the image were made. Image contains all necessary
+tools to build Bareflank for UEFI.
