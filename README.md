@@ -28,9 +28,18 @@ docker run --rm -it -v $PWD:/home/bareflank/bareflank -w /home/bareflank/barefla
 
 2. Clone both hypervisor and extended_apis
 
+Procedure was tested with version rc2.0.3 of Bareflank, other versions may or
+may not work, there may be some differences in code from different revisions.
+
 ```
 git clone https://github.com/Bareflank/hypervisor.git
+cd hypervisor
+git checkout rc2.0.3
+cd ..
 git clone https://github.com/Bareflank/extended_apis.git
+cd extended_apis
+git checkout rc2.0.3
+cd ..
 ```
 
 3. Prepare config file for CMake
