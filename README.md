@@ -37,7 +37,8 @@ git checkout ba613e2c687f
 3. Prepare config file for CMake
 
 ```
-cp scripts/cmake/config/example_config.cmake config.cmake
+cd ..
+cp hypervisor/scripts/cmake/config/example_config.cmake config.cmake
 vi config.cmake
 ```
 
@@ -61,7 +62,6 @@ set(OVERRIDE_VMM_TARGET integration)
 4. Prepare build directory and build
 
 ```
-cd ..
 mkdir build
 cd build
 cmake ../hypervisor
