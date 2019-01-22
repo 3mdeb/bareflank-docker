@@ -25,19 +25,19 @@ docker run --rm -it -v $PWD:/home/bareflank/bareflank -w /home/bareflank/barefla
 
 2. Clone both hypervisor and extended_apis
 
-Procedure was tested with version rc2.0.3 of Bareflank, other versions may or
+Procedure was tested with version `ba613e2c687f` of Bareflank, other versions may or
 may not work, there may be some differences in code from different revisions.
 
 ```
 git clone https://github.com/Bareflank/hypervisor.git
 cd hypervisor
-git checkout rc2.0.4
+git checkout ba613e2c687f
 ```
 
 3. Prepare config file for CMake
 
 ```
-cp hypervisor/scripts/cmake/config/example_config.cmake config.cmake
+cp scripts/cmake/config/example_config.cmake config.cmake
 vi config.cmake
 ```
 
@@ -61,6 +61,7 @@ set(OVERRIDE_VMM_TARGET integration)
 4. Prepare build directory and build
 
 ```
+cd ..
 mkdir build
 cd build
 cmake ../hypervisor
@@ -69,8 +70,8 @@ make -j<# cores + 1>
 
 Resulting file is located in `build/efi/x86_64-efi-pe/build`.
 
-Building image
---------------
+Building Docker image
+---------------------
 
 Image can be build from directory containing `Dockerfile` with:
 
