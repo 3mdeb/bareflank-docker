@@ -1,14 +1,10 @@
-# docker-bareflank
+Docker container for Bareflank builds
+-------------------------------------
 
-Image can be build from directory containing `Dockerfile` with:
+[![Build Status](https://travis-ci.com/3mdeb/bareflank-docker.svg?branch=master)](https://travis-ci.com/3mdeb/yocto-docker)
 
-```
-docker build -t bareflank-uefi .
-```
-
-This is one time operation. It is required only to build image for the first
-time or when any changes to the image were made. Image contains all necessary
-tools to build Bareflank for UEFI.
+Usage
+-----
 
 Next, instructions from [Bareflank README](https://github.com/Bareflank/hypervisor)
 or [YoutTube video](https://www.youtube.com/watch?v=FuEyjDqA53M) need to be
@@ -19,7 +15,8 @@ followed in the container:
 Make and enter a working directory before running following command:
 
 ```
-docker run --rm -it -v $PWD:/home/bareflank/bareflank -w /home/bareflank/bareflank bareflank-uefi /bin/bash
+docker run --rm -it -v $PWD:/home/bareflank/bareflank -w /home/bareflank/bareflank \
+3mdeb/bareflank-docker /bin/bash
 ```
 
 > You can also bind mount another directories or files. A common option for
@@ -28,29 +25,25 @@ docker run --rm -it -v $PWD:/home/bareflank/bareflank -w /home/bareflank/barefla
 
 2. Clone both hypervisor and extended_apis
 
-Procedure was tested with version rc2.0.3 of Bareflank, other versions may or
+Procedure was tested with version `ba613e2c687f` of Bareflank, other versions may or
 may not work, there may be some differences in code from different revisions.
 
 ```
 git clone https://github.com/Bareflank/hypervisor.git
 cd hypervisor
-git checkout rc2.0.3
-cd ..
-git clone https://github.com/Bareflank/extended_apis.git
-cd extended_apis
-git checkout rc2.0.3
-cd ..
+git checkout ba613e2c687f
 ```
 
 3. Prepare config file for CMake
 
 ```
+cd ..
 cp hypervisor/scripts/cmake/config/example_config.cmake config.cmake
 vi config.cmake
 ```
 
-Change both `set(ENABLE_EXTENDED_APIS OFF)` and `set(ENABLE_BUILD_EFI OFF)` to
-`ON`. Uncomment and change names in the `Override VMM` section - change this:
+Change `set(ENABLE_BUILD_EFI OFF)` to `ON`. Uncomment and change names in the
+`Override VMM` section - change this:
 
 ```
 # set(OVERRIDE_VMM <name>)
@@ -60,8 +53,8 @@ Change both `set(ENABLE_EXTENDED_APIS OFF)` and `set(ENABLE_BUILD_EFI OFF)` to
 to this:
 
 ```
-set(OVERRIDE_VMM eapis_integration_intel_x64_efi_test_efi)
-set(OVERRIDE_VMM_TARGET eapis_integration)
+set(OVERRIDE_VMM integration_intel_x64_efi_test_efi)
+set(OVERRIDE_VMM_TARGET integration)
 ```
 
 > These names were taken from `extended_apis/bfvmm/integration/arch/intel_x64/efi/CMakeLists.txt`
@@ -76,3 +69,16 @@ make -j<# cores + 1>
 ```
 
 Resulting file is located in `build/efi/x86_64-efi-pe/build`.
+
+Building Docker image
+---------------------
+
+Image can be build from directory containing `Dockerfile` with:
+
+```
+docker build -t 3mdeb/bareflank-docker .
+```
+
+This is one time operation. It is required only to build image for the first
+time or when any changes to the image were made. Image contains all necessary
+tools to build Bareflank for UEFI.
